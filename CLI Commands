@@ -1,0 +1,109 @@
+# Network Setup
+
+1. Pre-setup
+	a. Generate Crypto Materials
+		>> cryptogen generate --config=./crypto-config.yaml
+	 b. Generate Channel Artifacts
+	    >> configtxgen -profile OrdererGenesis -channelID upgrad-sys-channel -outputBlock ./channel-artifacts/genesis.block
+	    >> configtxgen -profile CertificationChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID certificationchannel
+	    >> configtxgen -profile CertificationChannel -outputAnchorPeersUpdate ./channel-artifacts/iitMSPanchors.tx -channelID certificationchannel -asOrg iitMSP
+	    >> configtxgen -profile CertificationChannel -outputAnchorPeersUpdate ./channel-artifacts/mhrdMSPanchors.tx -channelID certificationchannel -asOrg mhrdMSP
+	    >> configtxgen -profile CertificationChannel -outputAnchorPeersUpdate ./channel-artifacts/upgradMSPanchors.tx -channelID certificationchannel -asOrg upgradMSP
+
+2. Docker Network Setup
+	a. Start Docker Network
+		>> docker-compose -f ./docker-compose.yml up -d
+
+3. Fabric Network Setup
+	a. SSH Into CLI Container
+		>> docker exec -it cli /bin/bash
+	b. Create Channel
+		>> CORE_PEER_LOCALMSPID="iitMSP"
+		>> CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/iit.certification-network.com/users/Admin@iit.certification-network.com/msp
+		>> CORE_PEER_ADDRESS=peer0.iit.certification-network.com:7051
+		>> peer channel create -o orderer.certification-network.com:7050 -c certificationchannel -f ./channel-artifacts/channel.tx
+	c. Join Peer 0 - IIT
+		>> peer channel join -b certificationchannel.block
+	d. Join Peer 1 - IIT
+        >> CORE_PEER_ADDRESS=peer1.iit.certification-network.com:8051
+        >> peer channel join -b certificationchannel.block
+    e. Join Peer 0 - MHRD
+        >> CORE_PEER_LOCALMSPID="mhrdMSP"
+        >> CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/mhrd.certification-network.com/users/Admin@mhrd.certification-network.com/msp
+        >> CORE_PEER_ADDRESS=peer0.mhrd.certification-network.com:9051
+        >> peer channel join -b certificationchannel.block
+    f. Join Peer 1 - MHRD
+        >> CORE_PEER_ADDRESS=peer1.mhrd.certification-network.com:10051
+        >> peer channel join -b certificationchannel.block
+    g. Join Peer 0 - UPGRAD
+        >> CORE_PEER_LOCALMSPID="upgradMSP"
+        >> CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/upgrad.certification-network.com/users/Admin@upgrad.certification-network.com/msp
+        >> CORE_PEER_ADDRESS=peer0.upgrad.certification-network.com:11051
+        >> peer channel join -b certificationchannel.block
+    h. Join Peer 1 - UPGRAD
+        >> CORE_PEER_ADDRESS=peer1.upgrad.certification-network.com:12051
+        >> peer channel join -b certificationchannel.block
+    i. Update Anchor Peer for IIT
+        >> CORE_PEER_LOCALMSPID="iitMSP"
+        >> CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/iit.certification-network.com/users/Admin@iit.certification-network.com/msp
+        >> CORE_PEER_ADDRESS=peer0.iit.certification-network.com:7051
+        >> peer channel update -o orderer.certification-network.com:7050 -c certificationchannel -f ./channel-artifacts/iitMSPanchors.tx
+    j. Update Anchor Peer for MHRD
+        >> CORE_PEER_LOCALMSPID="mhrdMSP"
+        >> CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/mhrd.certification-network.com/users/Admin@mhrd.certification-network.com/msp
+        >> CORE_PEER_ADDRESS=peer0.mhrd.certification-network.com:9051
+        >> peer channel update -o orderer.certification-network.com:7050 -c certificationchannel -f ./channel-artifacts/mhrdMSPanchors.tx
+    k. Update Anchor Peer for UPGRAD
+        >> CORE_PEER_LOCALMSPID="upgradMSP"
+        >> CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/upgrad.certification-network.com/users/Admin@upgrad.certification-network.com/msp
+        >> CORE_PEER_ADDRESS=peer0.upgrad.certification-network.com:11051
+        >> peer channel update -o orderer.certification-network.com:7050 -c certificationchannel -f ./channel-artifacts/upgradMSPanchors.tx
+
+
+# Install & Instantiate Chaincode
+
+1. Run Chaincode in Dev Mode
+	a. SSH Into Chaincode Container
+    	>> docker exec -it chaincode /bin/bash
+    b. Run Chaincode Node App In Dev Mode
+        >> npm run start-dev
+
+2. Install Chaincode
+	a. SSH Into CLI Container
+		>> docker exec -it cli /bin/bash
+	b. Install Chaincode on Peer 0 - IIT
+		>> CORE_PEER_LOCALMSPID="iitMSP"
+        >> CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/iit.certification-network.com/users/Admin@iit.certification-network.com/msp
+        >> CORE_PEER_ADDRESS=peer0.iit.certification-network.com:7051
+        >> peer chaincode install -n certnet -v 1.1 -l node -p /opt/gopath/src/github.com/hyperledger/fabric/peer/chaincode/
+    c. Install Chaincode on Peer 0 - MHRD
+        >> CORE_PEER_LOCALMSPID="mhrdMSP"
+        >> CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/mhrd.certification-network.com/users/Admin@mhrd.certification-network.com/msp
+        >> CORE_PEER_ADDRESS=peer0.mhrd.certification-network.com:9051
+        >> peer chaincode install -n certnet -v 1.1 -l node -p /opt/gopath/src/github.com/hyperledger/fabric/peer/chaincode/
+    d. Install Chaincode on Peer 0 - UPGRAD
+        >> CORE_PEER_LOCALMSPID="upgradMSP"
+        >> CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/upgrad.certification-network.com/users/Admin@upgrad.certification-network.com/msp
+        >> CORE_PEER_ADDRESS=peer0.upgrad.certification-network.com:11051
+        >> peer chaincode install -n certnet -v 1.1 -l node -p /opt/gopath/src/github.com/hyperledger/fabric/peer/chaincode/
+
+3. Instantiate Chaincode
+	a. SSH Into CLI Container
+		>> docker exec -it cli /bin/bash
+	b. Instantiate Chaincode on Channel Using Peer 0 - IIT
+		>> CORE_PEER_LOCALMSPID="iitMSP"
+        >> CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/iit.certification-network.com/users/Admin@iit.certification-network.com/msp
+        >> CORE_PEER_ADDRESS=peer0.iit.certification-network.com:7051
+        >> peer chaincode instantiate -o orderer.certification-network.com:7050 -C certificationchannel -n certnet -l node -v 1.1 -c '{"Args":["org.certification-network.certnet:instantiate"]}' -P "OR ('iitMSP.member','mhrdMSP.member','upgradMSP.member')"
+
+4. View Container Logs
+	a. Start Peer 0 - IIT Container Logs
+		>> docker logs -f peer0.iit.certification-network.com
+
+5. Test Chaincode
+	a. SSH Into Peer 0 - IIT
+		>> docker exec -it peer0.iit.certification-network.com /bin/bash
+	b. Invoke Create Student Function
+		>> peer chaincode invoke -o orderer.certification-network.com:7050 -C certificationchannel -n certnet -c '{"Args":["org.certification-network.certnet:createStudent","0001","Aakash Bansal","connect@aakashbansal.com"]}'
+	c. Invoke Get Student Function
+		>> peer chaincode invoke -o orderer.certification-network.com:7050 -C certificationchannel -n certnet -c '{"Args":["org.certification-network.certnet:getStudent","0001"]}'
