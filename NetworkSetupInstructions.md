@@ -1,19 +1,4 @@
-# pharma-network
-A project for applying blockchain to tackle the challenge of drug-counterfeiting.
-
-## Fabric Network
-- 5 Organizations (Manufacturer, Distributor, Retailer, Consumer, Transporter)
-- TLS Disabled
-- 2 Peers per org
-- 1 User per node (Only Admin)
-
-## Chaincode Functionality
-- Create a student account
-- Issue a new certificate
-- Verify certificate
-
-
-## Network Setup
+## Network Setup Instructions
 
 1. Pre-setup
     1. Generate Crypto Materials

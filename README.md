@@ -1,12 +1,5 @@
 # pharma-network
-A project for applying blockchain to tackle the challenge of drug-counterfeiting.
-
-## Fabric Network
-- 5 Organizations (Manufacturer, Distributor, Retailer, Consumer, Transporter)
-- TLS Disabled
-- 2 Peers per org
-- 1 User per node (Only Admin)
-
+A project for applying blockchain to tackle the challenge of drug-counterfeiting in a pharmaceutical supply chain
 
 ## Network Architecture
 
@@ -57,7 +50,7 @@ The workflow required for the case study is divided into the following four unit
 -   Imagine a consumer or a retailer wishes to view the lifecycle of a drug called ‘amoxicillin’ with serial number ‘medi-001’. The ‘View Lifecycle’ functionality of the smart contract will allow any participant in the network to view the entire lifecycle of the asset.
 
 
-## Network Properties
+## Fabric Network Properties
 
 ![](images/Network_Architecture.png)
 
@@ -81,8 +74,10 @@ Let’s look at the properties of the fabric network required for the supply cha
 -   Peer0 of each organisation should be selected as the anchor peer.
  
 
-** Note: ** There are several other attributes for the network setup that are not specified. You are free to assume the values for those attributes.
+**Note:** There are several other attributes for the network setup that are not specified. You are free to assume the values for those attributes.
 
+## Smart Contract Properties
+![](images/Smart_Contract_Flow.png)
 
 ## Network Setup
 
