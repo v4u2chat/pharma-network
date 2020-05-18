@@ -57,6 +57,33 @@ The workflow required for the case study is divided into the following four unit
 -   Imagine a consumer or a retailer wishes to view the lifecycle of a drug called ‘amoxicillin’ with serial number ‘medi-001’. The ‘View Lifecycle’ functionality of the smart contract will allow any participant in the network to view the entire lifecycle of the asset.
 
 
+## Network Properties
+
+![](images/Network_Architecture.png)
+
+Let’s look at the properties of the fabric network required for the supply chain network.
+
+-   Name of the network: pharma-network
+-   The network will consist of the following organisations.
+    -   Manufacturer- 2 peers
+    -   Distributor-  2 peers
+    -   Retailer- 2 peers
+    -   Consumer- 2 peers
+    -   Transporter- 2 peers
+-   Initially, each organisation will have only ‘Admin’ as a User.
+-   Each organisation must set up a fabric-ca service.
+-   TLS should be disabled on the network.
+-   Orderer Type: Solo
+-   The name of the channel should be ‘pharmachannel’.
+-   The name of the chaincode should be ‘pharmanet’.
+-   The chaincode should be installed on both the peers of all the organisations.
+-   Endorsement Policy: Any one of the organisations should endorse the transaction.
+-   Peer0 of each organisation should be selected as the anchor peer.
+ 
+
+** Note: ** There are several other attributes for the network setup that are not specified. You are free to assume the values for those attributes.
+
+
 ## Network Setup
 
 1. Pre-setup
