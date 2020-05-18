@@ -10,9 +10,7 @@ A project for applying blockchain to tackle the challenge of drug-counterfeiting
 
 ## Network Architecture
 
-**Supply Chain Architecture**
-
-![](![alt](images/Network_Blueprint.png))
+![](images/Network_Blueprint.png)
 
 
 As shown in the image above, there are five stakeholders/organisations in this supply chain network.
@@ -44,19 +42,19 @@ The workflow required for the case study is divided into the following four unit
  
 
 ### Company Registration: 
-    -   All the entities who wish to be part of the supply chain network must be first registered or, in other terms, stored on the ledger. 
+-   All the entities who wish to be part of the supply chain network must be first registered or, in other terms, stored on the ledger. 
 ### Drug Registration:
-    -   As a part of this process, any drug manufactured has to be registered on the ledger by the manufacturing company. 
+-   As a part of this process, any drug manufactured has to be registered on the ledger by the manufacturing company. 
 ### Transfer Drug:
-    -   A buyer of the product will raise a Purchase Order for a particular drug.
-    -   The Purchase Order will be generated for a batch of drugs. It will include information like the name of the drug, the quantity required, Buyer, etc.
-    -   Based on the Purchase Order, the seller of the drug will initiate the process of shipment of the drug with the help of a transporter company like ‘FedEx’, and a shipment object will be created.
-    -   The shipment object will contain information like, the name of the transporter, origin, destination, etc.
-    -   Once the consignment is received by the buyer, the buyer will become the new owner of each item of the batch. 
-    -   If the buyer is a consumer, then the Purchase Order and the shipment process need not be initiated. Only the owner of the drug is changed from the retailer to the consumer. 
+-   A buyer of the product will raise a Purchase Order for a particular drug.
+-   The Purchase Order will be generated for a batch of drugs. It will include information like the name of the drug, the quantity required, Buyer, etc.
+-   Based on the Purchase Order, the seller of the drug will initiate the process of shipment of the drug with the help of a transporter company like ‘FedEx’, and a shipment object will be created.
+-   The shipment object will contain information like, the name of the transporter, origin, destination, etc.
+-   Once the consignment is received by the buyer, the buyer will become the new owner of each item of the batch. 
+-   If the buyer is a consumer, then the Purchase Order and the shipment process need not be initiated. Only the owner of the drug is changed from the retailer to the consumer. 
 ### View Lifecycle: 
-    -   It is the process to view the lifecycle of the asset to date. 
-    -   Imagine a consumer or a retailer wishes to view the lifecycle of a drug called ‘amoxicillin’ with serial number ‘medi-001’. The ‘View Lifecycle’ functionality of the smart contract will allow any participant in the network to view the entire lifecycle of the asset.
+-   It is the process to view the lifecycle of the asset to date. 
+-   Imagine a consumer or a retailer wishes to view the lifecycle of a drug called ‘amoxicillin’ with serial number ‘medi-001’. The ‘View Lifecycle’ functionality of the smart contract will allow any participant in the network to view the entire lifecycle of the asset.
 
 
 ## Network Setup
