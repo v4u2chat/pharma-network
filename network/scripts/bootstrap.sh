@@ -89,7 +89,7 @@ echo "Updating anchor peers for TRANSPORTER..."
 updateAnchorPeers 0 'transporter'
 
 echo
-echo "========= All GOOD, Hyperledger Fabric Certification Network Is Now Up and Running! =========== "
+echo "========= All GOOD, Hyperledger Fabric Pharma Network Is Now Up and Running! =========== "
 echo
 
 echo

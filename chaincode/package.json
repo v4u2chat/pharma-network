@@ -1,7 +1,7 @@
 {
-  "name": "certnet",
+  "name": "pharma-network",
   "version": "0.0.1",
-  "description": "Certification Network",
+  "description": "Pharma Network",
   "main": "index.js",
   "engines": {
     "node": ">=8",
@@ -11,22 +11,23 @@
     "lint": "eslint .",
     "pretest": "npm run lint",
     "test": "nyc mocha test --recursive",
-    "start-dev": "fabric-chaincode-node start --peer.address peer0.iit.certification-network.com:7053 --chaincode-id-name certnet:1.1",
+    "start-dev": "fabric-chaincode-node start --peer.address peer0.manufacturer.pharma-network.com:7053 --chaincode-id-name pharmanet:1.1",
     "start": "fabric-chaincode-node start",
     "mocha": "mocha test --recursive"
   },
   "engineStrict": true,
-  "author": "Aakash Bansal",
+  "author": "Rajesh GADEPARTHI",
   "dependencies": {
     "fabric-contract-api": "~1.4.2",
-    "fabric-shim": "~1.4.2"
+    "fabric-shim": "~1.4.2",
+    "webpack-dev-server": "^3.10.3"
   },
   "devDependencies": {
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "eslint": "^4.19.1",
-    "mocha": "^5.2.0",
-    "nyc": "^12.0.2",
+    "mocha": "^7.1.2",
+    "nyc": "^15.0.1",
     "sinon": "^6.0.0",
     "sinon-chai": "^3.2.0"
   },
