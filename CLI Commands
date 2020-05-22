@@ -1,8 +1,50 @@
 cd ~/Desktop/pharma-network/network/
 
-docker exec -it chaincode /bin/bash
+configtxgen -profile OrdererGenesis -channelID upgrad-sys-channel -outputBlock ./channel-artifacts/genesis.block
+configtxgen -profile PharmaChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID pharmachannel
+configtxgen -profile PharmaChannel -outputAnchorPeersUpdate ./channel-artifacts/manufacturerMSPanchors.tx -channelID pharmachannel -asOrg manufacturerMSP
+configtxgen -profile PharmaChannel -outputAnchorPeersUpdate ./channel-artifacts/distributorMSPanchors.tx -channelID pharmachannel -asOrg distributorMSP
+configtxgen -profile PharmaChannel -outputAnchorPeersUpdate ./channel-artifacts/retailerMSPanchors.tx -channelID pharmachannel -asOrg retailerMSP
+configtxgen -profile PharmaChannel -outputAnchorPeersUpdate ./channel-artifacts/consumerMSPanchors.tx -channelID pharmachannel -asOrg consumerMSP
+configtxgen -profile PharmaChannel -outputAnchorPeersUpdate ./channel-artifacts/transporterMSPanchors.tx -channelID pharmachannel -asOrg transporterMSP
+
+
+
+peer channel create -o orderer.pharma-network.com:7050 -c pharmachannel -f ./channel-artifacts/channel.tx
+
+peer channel join -b pharmachannel.block
+
+
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.manufacturer:registerCompany","CRN-001","Dr Reddys","Hyd","Manufacturer"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.distributor:registerCompany","CRN-002","VG pharma","Hyd","Distributor"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.retailer:registerCompany","CRN-003","Apolo","Hyd","Retailer"]}'
 
 peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.manufacturer:addDrug","TEST","1234","01/06/2020","01/06/2025","CRN-001"]}'
+
+
+
+docker exec -it cli /bin/bash
+
+CORE_PEER_LOCALMSPID="distributorMSP"
+CORE_PEER_ADDRESS=peer0.distributor.pharma-network.com:9051
+CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/distributor.pharma-network.com/users/Admin@distributor.pharma-network.com/msp
+
+
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.distributor:createPO","CRN-001","CRN-002","TEST","100"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.distributor:createPO","CRN-002","CRN-001","TEST","100"]}'
+
+
+
+docker exec -it cli /bin/bash
+
+CORE_PEER_LOCALMSPID="retailerMSP"
+CORE_PEER_ADDRESS=peer0.retailer.pharma-network.com:11051
+CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/retailer.pharma-network.com/users/Admin@retailer.pharma-network.com/msp
+
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.retailer:createPO","CRN-001","CRN-003","TEST","100"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.retailer:createPO","CRN-003","CRN-002","TEST","100"]}'
+
+
 
 
 
