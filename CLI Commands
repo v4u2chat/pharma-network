@@ -157,3 +157,27 @@ peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pha
 		>> peer chaincode invoke -o orderer.certification-network.com:7050 -C certificationchannel -n certnet -c '{"Args":["org.certification-network.certnet:createStudent","0001","Aakash Bansal","connect@aakashbansal.com"]}'
 	c. Invoke Get Student Function
 		>> peer chaincode invoke -o orderer.certification-network.com:7050 -C certificationchannel -n certnet -c '{"Args":["org.certification-network.certnet:getStudent","0001"]}'
+
+
+
+
+
+
+
+
+
+		// let crnSearchResultsIterator = await stub.getStateByPartialCompositeKey('org.pharma-network.pharmanet.company', [buyerCRN]);
+		// while(true){
+		// 	let responseRange = await crnSearchResultsIterator.next();
+		// 	if (!responseRange || !responseRange.value || !responseRange.value.key) {
+		// 		break;
+		// 	}
+
+		// 	let objectType;
+		// 	let attributes;
+		// 	({
+		// 		objectType,
+		// 		attributes
+		// 	} = await stub.splitCompositeKey(responseRange.value.key));
+		// 	break;
+		// }

@@ -1,18 +1,6 @@
 'use strict';
 const {Contract} = require('fabric-contract-api');
-
-const hierarchyKeyMap = {
-	'Manufacturer' : 1
-	,'Distributor' : 2
-	,'Retailer' : 3
-};
-
-const organisationRoleMap = {
-	'Manufacturer' : 'MANUFACTURER'
-	,'Distributor' : 'DISTRIBUTOR'
-	,'Retailer' : 'RETAILER'
-	,'Transporter' : 'TRANSPORTER'
-};
+const commonFunctions = require('./CommonFunctions.js');
 
 class ManufacturerContract extends Contract {
 
@@ -42,46 +30,10 @@ class ManufacturerContract extends Contract {
 	 * @returns  A ‘Company’ asset on the ledger
 	 */
 	async registerCompany(ctx, companyCRN, companyName, location, organisationRole) {
-
-		// Make sure valid organisationRole is provided
-		if(!organisationRoleMap[organisationRole]){	
-			throw new Error('Invalid Organisation Role : ' + organisationRole );
-		}
-
-		// Create a new composite key for the new CRN
-		const crnCacheID = ctx.stub.createCompositeKey('org.pharma-network.pharmanet.crncache', [companyCRN]);
-		//	Validation to ensure - No other CRN exists across all companies
-		let dataBuffer = await ctx.stub.getState(crnCacheID).catch(err => console.log(err));
-		if (dataBuffer.toString()) {
-			throw new Error('Invalid COMPANY Details. Another company with this CRN already exists.');
-		}
-
-
-		// Create a new composite key for the new COMPANY
-		const companyID = ctx.stub.createCompositeKey('org.pharma-network.pharmanet.company', [companyCRN,companyName]);
-		//	Validation to ensure - No other company exists already with provided details 
-		dataBuffer = await ctx.stub.getState(companyID).catch(err => console.log(err));
-		if (dataBuffer.toString()) {
-			throw new Error('Invalid COMPANY Details. Another company with this CRN & Name already exists.');
-		}
-
-		// Create a COMPANY model object to be stored in ledger
-		let newCompanyObject = {
-			companyID: companyID
-			,name: companyName
-			,location: location
-			,organisationRole: organisationRoleMap[organisationRole]
-			,hierarchyKey : hierarchyKeyMap[organisationRole]
-			,updatedBy: ctx.clientIdentity.getID()
-			,updatedOn: new Date()
-		};
-		
-		// Convert the JSON object to a buffer and send it to blockchain for storage
-		await ctx.stub.putState(companyID, Buffer.from(JSON.stringify(newCompanyObject)));
-		await ctx.stub.putState(crnCacheID, Buffer.from(JSON.stringify(newCompanyObject)));	// For future retrievals with just CRN
-		
-		// Return value of new COMPANY object created
-		return newCompanyObject;
+		// //re-use the common function
+		return await commonFunctions.registerCompany(ctx, companyCRN, companyName, location, organisationRole);
+		// let responseObj = await commonFunctions.registerCompany(ctx, companyCRN, companyName, location, organisationRole);
+		// return responseObj;
 	}
 
 	/**
