@@ -56,23 +56,37 @@ class ManufacturerContract extends Contract {
 			throw new Error('You are not authorized to perform this operation');
 		}
 
-		const crnCacheID = ctx.stub.createCompositeKey('org.pharma-network.pharmanet.crncache', [companyCRN]);
-		let crnCacheDataBuffer = await ctx.stub.getState(crnCacheID).catch(err => console.log(err));
-		if (!crnCacheDataBuffer.toString()) {
+		let companySearchResults = await commonFunctions.searchCompanyByCRN(ctx, companyCRN);
+		if(companySearchResults.length==0){
 			throw new Error('Invalid CRN. No MANUFACTURER exists with provided CRN');
 		}
+		
+		if(companySearchResults[0].organisationRole!='MANUFACTURER'){
+			throw new Error('You are not registered as MANUFACTURER and can\'t add DRUGs with your license');
+		}
+
+		
+		let drugSearchResults = await commonFunctions.searchDrugByName(ctx, drugName);
 
 		// Create a new composite key for the new DRUG
 		const productID = ctx.stub.createCompositeKey('org.pharma-network.pharmanet.drug', [drugName,serialNo]);
+
+		for(var i=0;i<drugSearchResults.length; i++) {
+			var drugFoundWithSameName = drugSearchResults[i];
+			if(drugFoundWithSameName.productID===productID){
+				throw new Error('You already have a DRUG with same '+drugName+' & '+serialNo);
+			}
+		}
 		
 		// Create a DRUG model object to be stored in ledger
 		let newDrugObject = {
 			productID: productID
 			,name: drugName
-			,manufacturer: JSON.parse(crnCacheDataBuffer.toString()).companyID
+			,manufacturer: companySearchResults[0].companyID
 			,manufacturingDate: mfgDate
 			,expiryDate: expDate
 			,owner: ctx.clientIdentity.getID()
+			,shipment : []
 		};
 		
 		// Convert the JSON object to a buffer and send it to blockchain for storage
