@@ -67,9 +67,62 @@ class RetailerContract extends Contract {
 	 * @returns  A ‘Shipment’ asset on the ledger
 	 */
 	async createShipment(ctx,buyerCRN, drugName, listOfAssets, transporterCRN ) {
-		console.log("buyerCRN, drugName, listOfAssets, transporterCRN ",buyerCRN, drugName, listOfAssets, transporterCRN );
+		console.log("RetailerContract >> createShipment >> buyerCRN, drugName, listOfAssets, transporterCRN ",buyerCRN, drugName, listOfAssets, transporterCRN );
 		//re-use the common function
 		return await commonFunctions.createShipment(ctx,buyerCRN, drugName, listOfAssets, transporterCRN );
+	}
+
+
+	/**
+	 *	This transaction is called by the retailer while selling the drug to a consumer. 
+	* 
+	*	Validations:
+	*		This transaction should be invoked only by the retailer, who is the owner of the drug. 
+	*
+	* 	Initiator: Retailer
+	* 
+	* @param drugName -  Name of the DRUG purchased
+	* @param serialNo - Drug's serial no
+	* @param retailerCRN -  CRN of Retailer Company
+	
+	* @param customerAadhar - Aadhaar of the Customer who purchased the DRUG
+	* 
+	* @returns  Updated ‘DRUG’ asset on the ledger
+	*/
+	async retailDrug(ctx, drugName, serialNo, retailerCRN, customerAadhar) {
+		console.log("RetailerContract >> retailDrug >> drugName, serialNo, retailerCRN, customerAadhar ",drugName, serialNo, retailerCRN, customerAadhar);
+		//re-use the common function
+		return await commonFunctions.retailDrug(ctx, drugName, serialNo, retailerCRN, customerAadhar);
+	}
+
+
+	/**
+	 * This transaction is used to view the current state of the Asset.
+	 * 
+	 * 	Initiator:  Any Member of the Network
+	 * 
+	 * @param drugName -  Name of the DRUG purchased
+	 * @param serialNo - Drug's serial no
+	 * 
+	 * @returns  A ‘DRUG’ asset on the ledger
+	 */
+	async viewDrugCurrentState(ctx, drugName, serialNo) {
+		return await commonFunctions.viewDrugCurrentState(ctx, drugName, serialNo);
+	}
+
+
+	/**
+	 * This transaction is used to view the current state of the Asset.
+	 * 
+	 * 	Initiator:  Any Member of the Network
+	 * 
+	 * @param drugName -  Name of the DRUG purchased
+	 * @param serialNo - Drug's serial no
+	 * 
+	 * @returns  A ‘DRUG’ asset on the ledger
+	 */
+	async viewHistory(ctx, drugName, serialNo) {
+		return await commonFunctions.viewHistory(ctx, drugName, serialNo);
 	}
 }
 

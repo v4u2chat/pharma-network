@@ -181,8 +181,6 @@ async function createPO(ctx, buyerCRN, sellerCRN, drugName,quantity) {
  */
 async function createShipment(ctx, buyerCRN, drugName, listOfAssets, transporterCRN) {
 
-	console.log("buyerCRN, drugName, listOfAssets, transporterCRN ",buyerCRN, drugName, listOfAssets, transporterCRN );
-
 	// Validation to allow ONLY ‘Manufacturer’ or ‘Distributor’ or ‘Retailer’ to perform this operation
 	if('distributorMSP'!=ctx.clientIdentity.mspId && 'retailerMSP'!=ctx.clientIdentity.mspId  && 'manufacturerMSP'!=ctx.clientIdentity.mspId){
 		throw new Error('You are not authorized to perform this operation : Your Organization is : '+ctx.clientIdentity.mspId);
@@ -314,19 +312,107 @@ async function updateShipment(ctx, buyerCRN, drugName, transporterCRN) {
 		drugObject.owner = buyerCompanySearchResults[0].companyID;
 		drugObject.shipment.push(shipmentID);
 
-		
+		console.log("updateShipment >> drugObject  >> ",drugObject);
 		await ctx.stub.putState(drugObject.productID, Buffer.from(JSON.stringify(drugObject)));
-		console.log("drugObject -- Updated",drugObject);
 	}
 	
 	// Update status to DELIVERED and Convert the JSON object to a buffer and send it to ledger for storage
 	shipmentObject.status = 'DELIVERED';
 	await ctx.stub.putState(shipmentID, toBuffer(shipmentObject));
-	console.log("shipmentObject -- Updated",shipmentObject);
 
 	return shipmentObject;
 }
+//===============================================================================================================================================
+/**
+ *	This transaction is called by the retailer while selling the drug to a consumer. 
+ * 
+ *	Validations:
+ *		This transaction should be invoked only by the retailer, who is the owner of the drug. 
+ *
+ * 	Initiator: Retailer
+ * 
+ * @param drugName -  Name of the DRUG purchased
+ * @param serialNo - Drug's serial no
+ * @param retailerCRN -  CRN of Retailer Company
+ 
+ * @param customerAadhar - Aadhaar of the Customer who purchased the DRUG
+ * 
+ * @returns  Updated ‘DRUG’ asset on the ledger
+ */
+async function retailDrug(ctx, drugName, serialNo, retailerCRN, customerAadhar) {
 
+	// Validation to allow ONLY ‘Retailer’ to perform this operation
+	if('retailerMSP'!=ctx.clientIdentity.mspId){
+		throw new Error('You are not authorized to perform this operation : Your Organization is : '+ctx.clientIdentity.mspId);
+	}
+	
+	//	Validate retailerCRN existstance 
+	let retailerCompanySearchResults = await searchCompanyByCRN(ctx, retailerCRN);
+	if(retailerCompanySearchResults.length==0){
+		throw new Error('Invalid Retailer CRN.');
+	}
+
+	//	Validate whether DRUG available with specified serialNo
+	const productID = ctx.stub.createCompositeKey('org.pharma-network.pharmanet.drug', [drugName,serialNo]);
+	let drugObjectDataBuffer = await ctx.stub.getState(productID).catch(err => console.log(err));
+	if (!drugObjectDataBuffer.toString()) {
+		throw new Error('No DRUG available with specified Name & Serial No',drugName,serialNo);
+	}
+	const drugObject = fromBuffer(drugObjectDataBuffer);
+
+	if(drugObject.owner!=retailerCompanySearchResults[0].companyID){
+		throw new Error('You can\'t sell this DRUG as you are not the OWNER of this DRUG ',drugName,serialNo);
+	}
+
+	drugObject.owner = customerAadhar;
+	await ctx.stub.putState(productID, Buffer.from(JSON.stringify(drugObject)));
+
+	return drugObject;
+
+}
+
+//============================================================================================================================================
+/**
+ * This transaction is used to view the current state of the Asset.
+ * 
+ * 	Initiator:  Any Member of the Network
+ * 
+ * @param drugName -  Name of the DRUG purchased
+ * @param serialNo - Drug's serial no
+ * 
+ * @returns  A ‘DRUG’ asset on the ledger
+ */
+async function viewHistory(ctx, drugName, serialNo) {
+
+	//	Validate whether DRUG available with specified serialNo
+	const productID = ctx.stub.createCompositeKey('org.pharma-network.pharmanet.drug', [drugName,serialNo]);
+	let historyQueryIterator = await ctx.stub.getHistoryForKey(productID).catch(err => console.log(err));
+	const historyValues = getAllResults(historyQueryIterator);
+	
+	return historyValues;
+}
+
+//============================================================================================================================================
+/**
+ * This transaction is used to view the current state of the Asset.
+ * 
+ * 	Initiator:  Any Member of the Network
+ * 
+ * @param drugName -  Name of the DRUG purchased
+ * @param serialNo - Drug's serial no
+ * 
+ * @returns  A ‘DRUG’ asset on the ledger
+ */
+async function viewDrugCurrentState(ctx, drugName, serialNo) {
+
+	//	Validate whether DRUG available with specified serialNo
+	const productID = ctx.stub.createCompositeKey('org.pharma-network.pharmanet.drug', [drugName,serialNo]);
+	let drugObjectDataBuffer = await ctx.stub.getState(productID).catch(err => console.log(err));
+	if (!drugObjectDataBuffer.toString()) {
+		throw new Error('No DRUG available with specified Name & Serial No',drugName,serialNo);
+	}
+	return fromBuffer(drugObjectDataBuffer);
+}
 //============================================================================================================================================
 //											The following are private UTIL functions
 //============================================================================================================================================
@@ -357,8 +443,6 @@ async function getAllResults(iterator) {
         const res = await iterator.next();
         if (res.value && res.value.value.toString()) {
             // if not a getHistoryForKey iterator then key is contained in res.value.key
-			//allResults.push(res.value.value.toString('utf8'));
-			console.log(res.value.value.toString('utf8'));
 			allResults.push(JSON.parse(res.value.value.toString('utf8')));
         }
 
@@ -385,9 +469,12 @@ async function searchDrugByName(ctx,drugName){
 //============================================================================================================================================
 
 module.exports.createPO = createPO;
+module.exports.retailDrug = retailDrug;
+module.exports.viewHistory = viewHistory;
 module.exports.createShipment = createShipment;
 module.exports.updateShipment = updateShipment;
 module.exports.registerCompany = registerCompany;
+module.exports.viewDrugCurrentState = viewDrugCurrentState;
 
 module.exports.searchDrugByName = searchDrugByName;
 module.exports.searchCompanyByCRN = searchCompanyByCRN;

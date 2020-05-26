@@ -73,6 +73,35 @@ class DistributorContract extends Contract {
 		//re-use the common function
 		return await commonFunctions.createShipment(ctx,buyerCRN, drugName, listOfAssets, transporterCRN );
 	}
+
+	/**
+	 * This transaction is used to view the current state of the Asset.
+	 * 
+	 * 	Initiator:  Any Member of the Network
+	 * 
+	 * @param drugName -  Name of the DRUG purchased
+	 * @param serialNo - Drug's serial no
+	 * 
+	 * @returns  A ‘DRUG’ asset on the ledger
+	 */
+	async viewDrugCurrentState(ctx, drugName, serialNo) {
+		return await commonFunctions.viewDrugCurrentState(ctx, drugName, serialNo);
+	}
+
+
+	/**
+	 * This transaction is used to view the current state of the Asset.
+	 * 
+	 * 	Initiator:  Any Member of the Network
+	 * 
+	 * @param drugName -  Name of the DRUG purchased
+	 * @param serialNo - Drug's serial no
+	 * 
+	 * @returns  A ‘DRUG’ asset on the ledger
+	 */
+	async viewHistory(ctx, drugName, serialNo) {
+		return await commonFunctions.viewHistory(ctx, drugName, serialNo);
+	}
 }
 
 module.exports = DistributorContract;

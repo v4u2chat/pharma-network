@@ -20,7 +20,7 @@ class TransporterContract extends Contract {
 	 * This transaction/function will be used to register new entities on the ledger. 
 	 * For example, for “VG pharma” to become a distributor on the network, it must register itself on the ledger using this transaction.
 	 * 
-	 * Initiator: Any Member of the network
+	 * Initiator: Any Member of the network except CONSUMERs
 	 * 
 	 * @param companyCRN -  Name of the Drug
 	 * @param companyName - Drug's serial no
@@ -57,6 +57,36 @@ class TransporterContract extends Contract {
 		}
 
 		return await commonFunctions.updateShipment(ctx, buyerCRN, drugName, transporterCRN);
+	}
+
+
+	/**
+	 * This transaction is used to view the current state of the Asset.
+	 * 
+	 * 	Initiator:  Any Member of the Network
+	 * 
+	 * @param drugName -  Name of the DRUG purchased
+	 * @param serialNo - Drug's serial no
+	 * 
+	 * @returns  A ‘DRUG’ asset on the ledger
+	 */
+	async viewDrugCurrentState(ctx, drugName, serialNo) {
+		return await commonFunctions.viewDrugCurrentState(ctx, drugName, serialNo);
+	}
+
+
+	/**
+	 * This transaction is used to view the current state of the Asset.
+	 * 
+	 * 	Initiator:  Any Member of the Network
+	 * 
+	 * @param drugName -  Name of the DRUG purchased
+	 * @param serialNo - Drug's serial no
+	 * 
+	 * @returns  A ‘DRUG’ asset on the ledger
+	 */
+	async viewHistory(ctx, drugName, serialNo) {
+		return await commonFunctions.viewHistory(ctx, drugName, serialNo);
 	}
 }
 
