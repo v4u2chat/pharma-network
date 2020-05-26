@@ -12,14 +12,13 @@ async function getContractInstance() {
 	gateway = new Gateway();
 	
 	// A wallet is where the credentials to be used for this transaction exist
-	// Credentials for user IIT_ADMIN was initially added to this wallet.
-	const wallet = new FileSystemWallet('./identity/mhrd');
+	const wallet = new FileSystemWallet('./identity/manufacturer');
 	
 	// What is the username of this Client user accessing the network?
-	const fabricUserName = 'MHRD_ADMIN';
+	const fabricUserName = 'MANUFACTURER_ADMIN';
 	
 	// Load connection profile; will be used to locate a gateway; The CCP is converted from YAML to JSON.
-	let connectionProfile = yaml.safeLoad(fs.readFileSync('./connection-profile-mhrd.yaml', 'utf8'));
+	let connectionProfile = yaml.safeLoad(fs.readFileSync('./connection-profile-manufacturer.yaml', 'utf8'));
 	
 	// Set connection options; identity and wallet
 	let connectionOptions = {
@@ -33,14 +32,14 @@ async function getContractInstance() {
 	await gateway.connect(connectionProfile, connectionOptions);
 	
 	// Access certification channel
-	console.log('.....Connecting to channel - certificationchannel');
-	const channel = await gateway.getNetwork('certificationchannel');
+	console.log('.....Connecting to channel - pharmachannel');
+	const channel = await gateway.getNetwork('pharmachannel');
 	
 	// Get instance of deployed Certnet contract
 	// @param Name of chaincode
 	// @param Name of smart contract
-	console.log('.....Connecting to Certnet Smart Contract');
-	return channel.getContract('certnet', 'org.certification-network.certnet');
+	console.log('.....Connecting to pharmanet Smart Contract');
+	return channel.getContract('pharmanet', 'org.pharma-network.pharmanet');
 }
 
 function disconnect() {

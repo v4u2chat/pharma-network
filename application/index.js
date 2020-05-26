@@ -13,9 +13,9 @@ const verifyCertificate = require('./5_verifyCertificate');
 app.use(cors());
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-app.set('title', 'Certification App');
+app.set('title', 'PharmaNet App');
 
-app.get('/', (req, res) => res.send('hello world'));
+app.get('/', (req, res) => res.send('hello blockchain world'));
 
 app.post('/addToWallet', (req, res) => {
 	addToWallet.execute(req.body.certificatePath, req.body.privateKeyPath)
@@ -100,4 +100,4 @@ app.post('/verifyCertificate', (req, res) => {
 			});
 });
 
-app.listen(port, () => console.log(`Distributed Certification App listening on port ${port}!`));
+app.listen(port, () => console.log(`Distributed PharmeNet App listening on port ${port}!`));

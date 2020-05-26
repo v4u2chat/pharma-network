@@ -1,12 +1,12 @@
 {
-	"name": "certification_network",
+	"name": "pharma_network",
 	"version": "1.0.0",
-	"description": "NodeJS Application Accessing The Certification Chaincode on Fabric Network",
+	"description": "NodeJS Application Accessing The PHARMANET Chaincode on Fabric Network",
 	"main": "1_addToWallet.js",
 	"scripts": {
 		"test": "rm -rf identity && node 1_addToWallet.js && node 2_createUser.js"
 	},
-	"author": "Aakash Bansal",
+	"author": "Rajesh GADEPARTHI",
 	"dependencies": {
 		"fabric-network": "~1.4.4",
 		"fabric-client": "~1.4.4",
