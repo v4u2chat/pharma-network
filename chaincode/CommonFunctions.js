@@ -117,6 +117,24 @@ async function createPO(ctx, buyerCRN, sellerCRN, drugName,quantity) {
 	}
 	const sellerCompanyInfo = sellerCompanySearchResults[0];
 
+	//	Validate DRUG existence in the network
+	let drugSearchResults = await searchDrugByName(ctx, drugName);
+	if(drugSearchResults.length==0){
+		throw new Error('No DRUG available with specified name '+drugName);
+	}
+	//	Validate DRUG existence with Manufacturer
+	let drugFoundWithSeller = false;
+	for(var i=0;i<drugSearchResults.length; i++) {
+		var drugFoundWithSameName = drugSearchResults[i];
+		if(drugFoundWithSameName.owner===sellerCompanyInfo.companyID){
+			drugFoundWithSeller=true;
+			break;
+		}
+	}
+	if(!drugFoundWithSeller){
+		throw new Error('SELLER does not own this DRUG : '+drugName);
+	}
+
 	//	Validate BUYing process takes place hierarcal manner
 	if(parseInt(sellerCompanyInfo.hierarchyKey)+1 != parseInt(buyerCompanyInfo.hierarchyKey)){
 		throw new Error('You can\'t purchase directly from '+sellerCompanyInfo.organisationRole+ " sellerCompanyInfo.hierarchyKey : "+sellerCompanyInfo.hierarchyKey+ " buyerCompanyInfo.hierarchyKey : "+buyerCompanyInfo.hierarchyKey);

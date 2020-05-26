@@ -85,7 +85,7 @@ class ManufacturerContract extends Contract {
 			,manufacturer: companySearchResults[0].companyID
 			,manufacturingDate: mfgDate
 			,expiryDate: expDate
-			,owner: ctx.clientIdentity.getID()
+			,owner: companySearchResults[0].companyID
 			,shipment : []
 		};
 		
