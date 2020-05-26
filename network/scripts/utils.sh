@@ -165,6 +165,9 @@ instantiateChaincode() {
 
     peer chaincode instantiate -o orderer.pharma-network.com:7050 -C "$CHANNEL_NAME" -n pharmanet -l "${LANGUAGE}" -v "${VERSION}" -c '{"Args":["org.pharma-network.pharmanet.retailer:instantiate"]}' -P "OR ('manufacturerMSP.member','distributorMSP.member','retailerMSP.member','consumerMSP.member','transporterMSP.member')" >&log.txt
     res=$?
+
+    peer chaincode instantiate -o orderer.pharma-network.com:7050 -C "$CHANNEL_NAME" -n pharmanet -l "${LANGUAGE}" -v "${VERSION}" -c '{"Args":["org.pharma-network.pharmanet.transporter:instantiate"]}' -P "OR ('manufacturerMSP.member','distributorMSP.member','retailerMSP.member','consumerMSP.member','transporterMSP.member')" >&log.txt
+    res=$?
     set +x
   else
     set -x
@@ -191,6 +194,8 @@ upgradeChaincode() {
     peer chaincode upgrade -o orderer.pharma-network.com:7050 -C $CHANNEL_NAME -n pharmanet -l ${LANGUAGE} -v ${VERSION} -p ${CC_SRC_PATH} -c '{"Args":["org.pharma-network.pharmanet.distributor:instantiate"]}' -P "OR ('manufacturerMSP.member','distributorMSP.member','retailerMSP.member','consumerMSP.member','transporterMSP.member')" >&log.txt
     res=$?
     peer chaincode upgrade -o orderer.pharma-network.com:7050 -C $CHANNEL_NAME -n pharmanet -l ${LANGUAGE} -v ${VERSION} -p ${CC_SRC_PATH} -c '{"Args":["org.pharma-network.pharmanet.retailer:instantiate"]}' -P "OR ('manufacturerMSP.member','distributorMSP.member','retailerMSP.member','consumerMSP.member','transporterMSP.member')" >&log.txt
+    res=$?
+    peer chaincode upgrade -o orderer.pharma-network.com:7050 -C $CHANNEL_NAME -n pharmanet -l ${LANGUAGE} -v ${VERSION} -p ${CC_SRC_PATH} -c '{"Args":["org.pharma-network.pharmanet.transporter:instantiate"]}' -P "OR ('manufacturerMSP.member','distributorMSP.member','retailerMSP.member','consumerMSP.member','transporterMSP.member')" >&log.txt
     res=$?
     set +x
   else

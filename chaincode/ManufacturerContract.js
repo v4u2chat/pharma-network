@@ -85,7 +85,7 @@ class ManufacturerContract extends Contract {
 			,manufacturingDate: mfgDate
 			,expiryDate: expDate
 			,owner: companySearchResults[0].companyID
-			,shipment : null
+			,shipment : []
 		};
 		
 		// Convert the JSON object to a buffer and send it to blockchain for storage

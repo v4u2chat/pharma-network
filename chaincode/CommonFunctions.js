@@ -179,7 +179,7 @@ async function createPO(ctx, buyerCRN, sellerCRN, drugName,quantity) {
  * 
  * @returns  A ‘Shipment’ asset on the ledger
  */
-async function createShipment(ctx,buyerCRN, drugName, listOfAssets, transporterCRN) {
+async function createShipment(ctx, buyerCRN, drugName, listOfAssets, transporterCRN) {
 
 	console.log("buyerCRN, drugName, listOfAssets, transporterCRN ",buyerCRN, drugName, listOfAssets, transporterCRN );
 
@@ -200,7 +200,7 @@ async function createShipment(ctx,buyerCRN, drugName, listOfAssets, transporterC
 	}
 
 	//	Validate transporter existstance 
-	let transporterCompanySearchResults = await searchCompanyByCRN(ctx, buyerCRN);
+	let transporterCompanySearchResults = await searchCompanyByCRN(ctx, transporterCRN);
 	if(transporterCompanySearchResults.length==0){
 		throw new Error('Invalid Transporter CRN.');
 	}
@@ -214,9 +214,6 @@ async function createShipment(ctx,buyerCRN, drugName, listOfAssets, transporterC
 	}
 	const poDetails = fromBuffer(poDataBuffer);
 
-	console.log("poDetails",poDetails);
-
-
 	//	Validate :  The length of ‘listOfAssets’ should be exactly equal to the quantity specified in the PO.
 	var listOfAssetsArray = JSON.parse(listOfAssets);
 	if(listOfAssetsArray.length!=parseInt(poDetails.quantity)){
@@ -228,26 +225,20 @@ async function createShipment(ctx,buyerCRN, drugName, listOfAssets, transporterC
 	if(drugSearchResults.length==0){
 		throw new Error('No DRUG available with specified name '+drugName);
 	}
-
 	
 	//	Validate DRUG existence with Manufacturer
 	let drugFoundWithSeller = false;
-	let drugAssetsToBeUpdated = [];
+	let drugAssetsToBeAttached = [];
 
 	for(var i=0;i<drugSearchResults.length; i++) {
 		var drugFoundWithSameName = drugSearchResults[i];
 		
-
-		console.log("poDetails.sellerCRN",poDetails.additionalInfo.sellerCompanyID);
-		console.log("drugFoundWithSameName.owner",drugFoundWithSameName.owner);
-		console.log("drugFoundWithSameName.shipment",drugFoundWithSameName.shipment);
-
-		// Check the DRUG is available with SELLER and NOT SOLD
-		if(drugFoundWithSameName.owner===poDetails.additionalInfo.sellerCompanyID && drugFoundWithSameName.shipment==null){
+		// Check the DRUG is available with SELLER 
+		if(drugFoundWithSameName.owner===poDetails.additionalInfo.sellerCompanyID){	//&& drugFoundWithSameName.shipment.length==0
 			drugFoundWithSeller=true;
-			drugAssetsToBeUpdated.push(drugFoundWithSameName);
+			drugAssetsToBeAttached.push(drugFoundWithSameName.productID);
 
-			if(drugAssetsToBeUpdated.length==poDetails.quantity){
+			if(drugAssetsToBeAttached.length==poDetails.quantity){
 				break;
 			}
 		}
@@ -257,33 +248,23 @@ async function createShipment(ctx,buyerCRN, drugName, listOfAssets, transporterC
 		throw new Error('SELLER does not own this DRUG : '+drugName);
 	}
 	//	Validate STOCK availability
-	if(drugAssetsToBeUpdated.length<poDetails.quantity){
+	if(drugAssetsToBeAttached.length<poDetails.quantity){
 		throw new Error('At this moment, SELLER does not have sufficient stock of DRUG : '+drugName);
 	}
 	// Create a new composite key for the new SHIPMENT Order
 	const shipmentID = ctx.stub.createCompositeKey('org.pharma-network.pharmanet.shipment', [buyerCRN,drugName]);
-
-
 	// Create a PO model object to be stored in ledger
 	let newShipmentObject = {
 		shipmentID: shipmentID
 		,creator : buyerCompanySearchResults[0].companyID
-		,assets : drugAssetsToBeUpdated
+		,assets : drugAssetsToBeAttached
 		,transporterCRN: transporterCRN
 		,status: 'IN-TRANSIT'
 	};
 	
 	// Convert the JSON object to a buffer and send it to blockchain for storage
-	await ctx.stub.putState(poID, toBuffer(newShipmentObject));
+	await ctx.stub.putState(shipmentID, toBuffer(newShipmentObject));
 	
-	// Update all DRUG assets with new OWNER and shipment details
-	for(var i=0;i<drugAssetsToBeUpdated.length;i++){
-		drugAssetsToBeUpdated[i].owner = buyerCompanySearchResults[0].companyID;
-		drugAssetsToBeUpdated[i].shipment = shipmentID;
-
-		await ctx.stub.putState(drugAssetsToBeUpdated[i].productID, Buffer.from(JSON.stringify(drugAssetsToBeUpdated[i])));
-	}
-
 	return newShipmentObject;	// Return value of new  Shipment object created to user
 }
 
@@ -300,13 +281,20 @@ async function createShipment(ctx,buyerCRN, drugName, listOfAssets, transporterC
  * @param drugName -  Name of the DRUG purchased
  * @param transporterCRN - CRN of ‘Transporter’ Company
  * 
- * @returns  A ‘Drug’ asset on the ledger
+ * @returns  Updated ‘Shipment’ asset on the ledger
  */
-async function updateShipment( buyerCRN, drugName, transporterCRN) {
+async function updateShipment(ctx, buyerCRN, drugName, transporterCRN) {
 
-	// Validation to allow ONLY ‘Transporter’ to perform this operation
-	if('transporterMSP'!=ctx.clientIdentity.mspId){
-		throw new Error('You are not authorized to perform this operation : Your Organization is : '+ctx.clientIdentity.mspId);
+	//	Validate BUYER existstance 
+	let buyerCompanySearchResults = await searchCompanyByCRN(ctx, buyerCRN);
+	if(buyerCompanySearchResults.length==0){
+		throw new Error('Invalid BUYER CRN.');
+	}
+
+	//	Validate transporter existstance 
+	let transporterCompanySearchResults = await searchCompanyByCRN(ctx, transporterCRN);
+	if(transporterCompanySearchResults.length==0){
+		throw new Error('Invalid Transporter CRN.');
 	}
 
 	// Create a new composite key for the new SHIPMENT Order
@@ -316,12 +304,27 @@ async function updateShipment( buyerCRN, drugName, transporterCRN) {
 		throw new Error('Invalid operation. Can\'t find any SHIPMENT with specified BUYER & DRUG');
 	}
 	const shipmentObject = fromBuffer(shipmentoDataBuffer);
+	
+
+	// Update all DRUG assets with new OWNER and shipment details
+	for(var i=0;i<shipmentObject.assets.length;i++){
+		const drugObjectDataBuffer = await ctx.stub.getState(shipmentObject.assets[i]).catch(err => console.log(err));
+		let drugObject = fromBuffer(drugObjectDataBuffer);
+
+		drugObject.owner = buyerCompanySearchResults[0].companyID;
+		drugObject.shipment.push(shipmentID);
+
+		
+		await ctx.stub.putState(drugObject.productID, Buffer.from(JSON.stringify(drugObject)));
+		console.log("drugObject -- Updated",drugObject);
+	}
+	
+	// Update status to DELIVERED and Convert the JSON object to a buffer and send it to ledger for storage
 	shipmentObject.status = 'DELIVERED';
+	await ctx.stub.putState(shipmentID, toBuffer(shipmentObject));
+	console.log("shipmentObject -- Updated",shipmentObject);
 
-	//Get all DRUG objects and update their shipment & OWNER info
-	//let drugSearchResultsIterator = await stub.getStateByPartialCompositeKey('org.pharma-network.pharmanet.drug', [drugName]);
-
-
+	return shipmentObject;
 }
 
 //============================================================================================================================================
