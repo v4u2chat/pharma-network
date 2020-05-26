@@ -32,8 +32,6 @@ class ManufacturerContract extends Contract {
 	async registerCompany(ctx, companyCRN, companyName, location, organisationRole) {
 		// //re-use the common function
 		return await commonFunctions.registerCompany(ctx, companyCRN, companyName, location, organisationRole);
-		// let responseObj = await commonFunctions.registerCompany(ctx, companyCRN, companyName, location, organisationRole);
-		// return responseObj;
 	}
 
 	/**
@@ -74,6 +72,7 @@ class ManufacturerContract extends Contract {
 		for(var i=0;i<drugSearchResults.length; i++) {
 			var drugFoundWithSameName = drugSearchResults[i];
 			if(drugFoundWithSameName.productID===productID){
+				console.log(drugFoundWithSameName.productID);
 				throw new Error('You already have a DRUG with same '+drugName+' & '+serialNo);
 			}
 		}
@@ -86,7 +85,7 @@ class ManufacturerContract extends Contract {
 			,manufacturingDate: mfgDate
 			,expiryDate: expDate
 			,owner: companySearchResults[0].companyID
-			,shipment : []
+			,shipment : null
 		};
 		
 		// Convert the JSON object to a buffer and send it to blockchain for storage
@@ -94,6 +93,28 @@ class ManufacturerContract extends Contract {
 		await ctx.stub.putState(productID, dataBuffer);
 		// Return value of new Drug object created to user
 		return newDrugObject;
+	}
+
+	/**
+	 * After the buyer invokes the createPO transaction, the seller invokes this transaction to transport the consignment via a transporter corresponding to each PO.
+	 * 
+	 *	Validations:
+	 *		The length of ‘listOfAssets’ should be exactly equal to the quantity specified in the PO.
+	 * 		The IDs of the Asset should be valid IDs which are registered on the network.
+	 *
+	 * 	Initiator:  ‘Manufacturer’ or ‘Distributor’ or ‘Retailer’
+	 * 
+	 * @param buyerCRN -  CRN of Buyer Company
+	 * @param drugName -  Name of the DRUG purchased
+	 * @param listOfAssets - list of all DRUGs purchased
+	 * @param transporterCRN - CRN of ‘Transporter’ Company
+	 * 
+	 * @returns  A ‘Shipment’ asset on the ledger
+	 */
+	async createShipment (ctx,buyerCRN, drugName, listOfAssets, transporterCRN ) {
+		console.log("buyerCRN, drugName, listOfAssets, transporterCRN ",buyerCRN, drugName, listOfAssets, transporterCRN );
+		//re-use the common function
+		return await commonFunctions.createShipment(ctx,buyerCRN, drugName, listOfAssets, transporterCRN );
 	}
 }
 

@@ -45,11 +45,33 @@ class DistributorContract extends Contract {
 	 * @param drugName -  Name of the DRUG purchased
 	 * @param quantity - Quantity of the DRUG purchased
 	 * 
-	 * @returns  A ‘Drug’ asset on the ledger
+	 * @returns  A ‘PO’ asset on the ledger
 	 */
 	async createPO(ctx, buyerCRN, sellerCRN, drugName,quantity) {
 		//re-use the common function
 		return await commonFunctions.createPO(ctx, buyerCRN, sellerCRN, drugName,quantity);
+	}
+
+	/**
+	 * After the buyer invokes the createPO transaction, the seller invokes this transaction to transport the consignment via a transporter corresponding to each PO.
+	 * 
+	 *	Validations:
+	 *		The length of ‘listOfAssets’ should be exactly equal to the quantity specified in the PO.
+	 * 		The IDs of the Asset should be valid IDs which are registered on the network.
+	 *
+	 * 	Initiator:  ‘Manufacturer’ or ‘Distributor’ or ‘Retailer’
+	 * 
+	 * @param buyerCRN -  CRN of Buyer Company
+	 * @param drugName -  Name of the DRUG purchased
+	 * @param listOfAssets - list of all DRUGs purchased
+	 * @param transporterCRN - CRN of ‘Transporter’ Company
+	 * 
+	 * @returns  A ‘Shipment’ asset on the ledger
+	 */
+	async createShipment(ctx,buyerCRN, drugName, listOfAssets, transporterCRN ) {
+		console.log("buyerCRN, drugName, listOfAssets, transporterCRN ",buyerCRN, drugName, listOfAssets, transporterCRN );
+		//re-use the common function
+		return await commonFunctions.createShipment(ctx,buyerCRN, drugName, listOfAssets, transporterCRN );
 	}
 }
 

@@ -36,6 +36,12 @@ peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pha
 peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.manufacturer:addDrug","Paracetamol","004","01/06/2020","01/06/2025","MAN001"]}'
 
 
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.distributor:createPO","DIST001","MAN001","Paracetamol","1"]}'
+
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.manufacturer:createShipment","DIST001","Paracetamol","[\"org.pharma-network.pharmanet.drugParacetamol001\"]","TRA001"]}'
+
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.distributor:createShipment","DIST001","Paracetamol","org.pharma-network.pharmanet.drugParacetamol001","TRA001"]}'
+
 
 docker exec -it cli /bin/bash
 
@@ -44,10 +50,12 @@ CORE_PEER_ADDRESS=peer0.distributor.pharma-network.com:9051
 CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/distributor.pharma-network.com/users/Admin@distributor.pharma-network.com/msp
 
 
-peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.distributor:createPO","MAN001","DIST001","TEST","100"]}'
-peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.distributor:createPO","DIST0011","MAN001","TEST","100"]}'
-peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.distributor:createPO","DIST001","MAN001","TEST","100"]}'
-peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.distributor:createPO","DIST001","MAN001","Paracetamol","100"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.distributor:createPO","MAN001","DIST001","TEST","1"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.distributor:createPO","DIST0011","MAN001","TEST","1"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.distributor:createPO","DIST001","MAN001","TEST","1"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.distributor:createPO","DIST001","MAN001","Paracetamol","1"]}'
+
+
 
 
 
@@ -57,10 +65,12 @@ CORE_PEER_LOCALMSPID="retailerMSP"
 CORE_PEER_ADDRESS=peer0.retailer.pharma-network.com:11051
 CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/retailer.pharma-network.com/users/Admin@retailer.pharma-network.com/msp
 
-peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.retailer:createPO","CRN-001","CRN-003","TEST","100"]}'
-peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.retailer:createPO","MAN001","DIST001","TEST","100"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.retailer:createPO","CRN-001","CRN-003","TEST","1"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.retailer:createPO","MAN001","DIST001","TEST","1"]}'
 
 
+
+org.pharma-network.pharmanet.drugParacetamol001
 
 
 
@@ -178,7 +188,20 @@ peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pha
 
 
 
+//  Validate listOfAssets whether they exist on ledger or not and keep them handy for further updates after shipment
+    let drugAssetsToBeUpdated = [];
+    for(var i=0;i<listOfAssetsArray.length;i++){
+        console.log("listOfAssetsArray[i]",listOfAssetsArray[i]);
 
+        let drugAssetDataBuffer = await ctx.stub.getState(listOfAssetsArray[i]).catch(err => console.log(err));
+        if (!drugAssetDataBuffer.toString()) {
+            throw new Error('Invalid DRUG Asset ID : '+listOfAssetsArray[i]);
+        }
+        drugAssetsToBeUpdated.push(JSON.parse(drugAssetDataBuffer.toString()));
+    }
+
+
+    
 
 
 
