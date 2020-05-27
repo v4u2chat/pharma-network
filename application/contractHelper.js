@@ -4,7 +4,7 @@ const { FileSystemWallet, Gateway } = require('fabric-network');
 let gateway;
 
 
-async function getContractInstance() {
+async function getContractInstance(orgType) {
 	
 	// A gateway defines which peer is used to access Fabric network
 	// It uses a common connection profile (CCP) to connect to a Fabric Peer
@@ -12,10 +12,10 @@ async function getContractInstance() {
 	gateway = new Gateway();
 	
 	// A wallet is where the credentials to be used for this transaction exist
-	const wallet = new FileSystemWallet('./identity/manufacturer');
+	const wallet = new FileSystemWallet('./identity/'+orgType);
 	
 	// What is the username of this Client user accessing the network?
-	const fabricUserName = 'MANUFACTURER_ADMIN';
+	const fabricUserName = orgType.toUpperCase()+'_ADMIN';
 	
 	// Load connection profile; will be used to locate a gateway; The CCP is converted from YAML to JSON.
 	let connectionProfile = yaml.safeLoad(fs.readFileSync('./connection-profile-manufacturer.yaml', 'utf8'));
@@ -39,7 +39,7 @@ async function getContractInstance() {
 	// @param Name of chaincode
 	// @param Name of smart contract
 	console.log('.....Connecting to pharmanet Smart Contract');
-	return channel.getContract('pharmanet', 'org.pharma-network.pharmanet');
+	return channel.getContract('pharmanet', 'org.pharma-network.pharmanet.'+orgType);
 }
 
 function disconnect() {

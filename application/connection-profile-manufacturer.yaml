@@ -23,15 +23,15 @@ client:
       orderer: 300
 
 channels:
-  certificationchannel:
+  pharmachannel:
     orderers:
       - orderer.pharma-network.com
     peers:
       peer0.manufacturer.pharma-network.com:
-        endorsingPeer: false
-        chaincodeQuery: false
+        endorsingPeer: true
+        chaincodeQuery: true
         ledgerQuery: true
-        eventSource: false
+        eventSource: true
       peer1.manufacturer.pharma-network.com:
         endorsingPeer: false
         chaincodeQuery: false

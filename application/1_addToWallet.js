@@ -24,7 +24,7 @@ async function addIdentity(orgType,privateKeyFileName){
 		const privatekey = fs.readFileSync(path.join(credentialPath, '/msp/keystore/'+privateKeyFileName)).toString();
 		
 		// Load credentials into wallet
-		const identityLabel = orgType+'_ADMIN';
+		const identityLabel = orgType.toUpperCase()+'_ADMIN';
 		const identity = X509WalletMixin.createIdentity(''+orgType+'MSP', certificate, privatekey);
 		
 		await wallet.import(identityLabel, identity);
