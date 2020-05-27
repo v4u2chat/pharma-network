@@ -19,7 +19,7 @@ const organisationRoleMap = {
  * This transaction/function will be used to register new entities on the ledger. 
  * For example, for “VG pharma” to become a distributor on the network, it must register itself on the ledger using this transaction.
  * 
- * Initiator: Any Member of the network
+ * Initiator: Any Member of the network other than consumet
  * 
  * @param companyCRN -  Name of the Drug
  * @param companyName - Drug's serial no
@@ -30,24 +30,22 @@ const organisationRoleMap = {
  */
 async function registerCompany(ctx, companyCRN, companyName, location, organisationRole) {
 
+	// Validation to allow ONLY ‘Manufacturer’ or ‘Distributor’ or ‘Retailer’  or ‘Transporter’ to perform this operation
+	if('consumerMSP'==ctx.clientIdentity.mspId ){
+		throw new Error('You are not authorized to perform this operation : Your Organization is : '+ctx.clientIdentity.mspId);
+	}
+
+	// Validate the organisationRole
 	if(!organisationRoleMap[organisationRole]){	
 		throw new Error('Invalid Organisation Role : ' + organisationRole );
 	}
 
+	// Validate the existence of any other company with same CRN
 	let companySearchResults = await searchCompanyByCRN(ctx, companyCRN);
 	if(companySearchResults.length>0){
 		throw new Error('Invalid COMPANY Details. Another company with this CRN already exists.');
 	}
 	
-	// Create a new composite key for the new CRN
-	// const crnCacheID = ctx.stub.createCompositeKey('org.pharma-network.pharmanet.crncache', [companyCRN]);
-	// //	Validation to ensure - No other CRN exists across all companies
-	// let dataBuffer = await ctx.stub.getState(crnCacheID).catch(err => console.log(err));
-	// if (dataBuffer.toString()) {
-	// 	throw new Error('Invalid COMPANY Details. Another company with this CRN & Name already exists.');
-	// }
-
-
 	// Create a new composite key for the new COMPANY
 	const companyID = ctx.stub.createCompositeKey('org.pharma-network.pharmanet.company', [companyCRN,companyName]);
 
@@ -70,10 +68,7 @@ async function registerCompany(ctx, companyCRN, companyName, location, organisat
 	
 	// Convert the JSON object to a buffer and send it to blockchain for storage
 	await ctx.stub.putState(companyID, toBuffer(newCompanyObject));
-	//await ctx.stub.putState(crnCacheID, toBuffer(newCompanyObject));	// For future retrievals with just CRN
-	
 
-	
 	//Return value of new COMPANY object created
 	return newCompanyObject;
 }

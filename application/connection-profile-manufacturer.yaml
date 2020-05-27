@@ -48,30 +48,30 @@ channels:
         ledgerQuery: true
         eventSource: false
       peer0.retailer.pharma-network.com:
-        endorsingPeer: false
-        chaincodeQuery: false
+        endorsingPeer: true
+        chaincodeQuery: true
         ledgerQuery: true
-        eventSource: false
+        eventSource: true
       peer1.retailer.pharma-network.com:
         endorsingPeer: false
         chaincodeQuery: false
         ledgerQuery: true
         eventSource: false
       peer0.consumer.pharma-network.com:
-        endorsingPeer: false
-        chaincodeQuery: false
+        endorsingPeer: true
+        chaincodeQuery: true
         ledgerQuery: true
-        eventSource: false
+        eventSource: true
       peer1.consumer.pharma-network.com:
         endorsingPeer: false
         chaincodeQuery: false
         ledgerQuery: true
         eventSource: false
       peer0.transporter.pharma-network.com:
-        endorsingPeer: false
-        chaincodeQuery: false
+        endorsingPeer: true
+        chaincodeQuery: true
         ledgerQuery: true
-        eventSource: false
+        eventSource: true
       peer1.transporter.pharma-network.com:
         endorsingPeer: false
         chaincodeQuery: false
@@ -246,4 +246,3 @@ certificateAuthorities:
       - enrollId: admin
         enrollSecret: adminpw
     caName: ca.transporter.pharma-network.com
-    
