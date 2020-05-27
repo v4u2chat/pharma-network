@@ -40,11 +40,11 @@ async function addIdentity(orgType,privateKeyFileName){
 
 async function initializeAllIdentititiesAtOnce() {
 	try {
-		await addIdentity('manufacturer','4467cbc87d9e0b1d56d1c4ccc5c3a72af27a9b17d2024db8cd7956dc4707045f_sk');
-		await addIdentity('distributor','d09d7a34e7399e527d3573d692e3a78a602261ccda5fe2053652a16026c2abf0_sk');
-		await addIdentity('retailer','8690deccd410bbea6c5fb1c1d0de04bc7bc5269abc03de2db7113c0e56edd08f_sk');
-		await addIdentity('consumer','e7a2a60709ac2255bba724ecd9626a8e9634c77b504f99a611077773af4557d6_sk');
-		await addIdentity('transporter','f12f6a352e07169511272969df1a1c28a1ef3648ce519d78b59bbbc2c254d37b_sk');
+		await addIdentity('manufacturer','a3486388c31a90e9794f96157db2aa5606eaa896bfe944535323317c22d30e02_sk');
+		await addIdentity('distributor','e20b1c8f306ec8a0e955dc9db7cb808bfd4422958bf7ada11094905d46eb55b8_sk');
+		await addIdentity('retailer','36d65c3ad6c1bd8bd15cb5765e5fe6aac3138c1f71413654d2b95a0960642ca7_sk');
+		await addIdentity('consumer','d6bd7312af941cd2a91af0b3b1c409bfd07af332db21fa406b6426c8f70b4032_sk');
+		await addIdentity('transporter','d75d8a1333ace5d81efcf2b4e5f91db657e7d29c993d28593aabbe7ed50b3bb4_sk');
 	} catch (error) {
 		console.log(error.stack);
 		throw new Error(`Error adding to wallet. ${error}`);

@@ -30,10 +30,10 @@ peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pha
 peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.retailer:registerCompany","TRA001","FedEx","Delhi","Transporter"]}'
 peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.retailer:registerCompany","TRA002","Blue Dart","Bangalore","Transporter"]}'
 
-peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.manufacturer:addDrug","Paracetamol","001","01/06/2020","01/06/2025","MAN001"]}'
-peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.manufacturer:addDrug","Paracetamol","002","01/06/2020","01/06/2025","MAN001"]}'
-peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.manufacturer:addDrug","Paracetamol","003","01/06/2020","01/06/2025","MAN001"]}'
-peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.manufacturer:addDrug","Paracetamol","004","01/06/2020","01/06/2025","MAN001"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.manufacturer:addDrug","Paracetamol","001","01/01/2020","01/06/2025","MAN001"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.manufacturer:addDrug","Paracetamol","002","01/01/2020","01/06/2025","MAN001"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.manufacturer:addDrug","Paracetamol","003","01/01/2020","01/06/2025","MAN001"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.manufacturer:addDrug","Paracetamol","004","01/01/2020","01/06/2025","MAN001"]}'
 
 
 peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.manufacturer:viewDrugCurrentState","Paracetamol","001"]}'
