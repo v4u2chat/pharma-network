@@ -32,19 +32,27 @@ async function addIdentity(orgType,privateKeyFileName){
 		console.log(identityLabel +" identity added successfully");
 		
 	} catch (error) {
-		console.log(`Error adding to wallet. ${error}`);
 		console.log(error.stack);
+		throw new Error(`Error adding to wallet. ${error}`);
 	}
 }
-exports.addIdentity = addIdentity;
-// async function main() {
-// 	addIdentity('manufacturer','4467cbc87d9e0b1d56d1c4ccc5c3a72af27a9b17d2024db8cd7956dc4707045f_sk');
-// 	addIdentity('distributor','d09d7a34e7399e527d3573d692e3a78a602261ccda5fe2053652a16026c2abf0_sk');
-// 	addIdentity('retailer','8690deccd410bbea6c5fb1c1d0de04bc7bc5269abc03de2db7113c0e56edd08f_sk');
-// 	addIdentity('consumer','e7a2a60709ac2255bba724ecd9626a8e9634c77b504f99a611077773af4557d6_sk');
-// 	addIdentity('transporter','f12f6a352e07169511272969df1a1c28a1ef3648ce519d78b59bbbc2c254d37b_sk');
-// }
 
+
+async function initializeAllIdentititiesAtOnce() {
+	try {
+		await addIdentity('manufacturer','4467cbc87d9e0b1d56d1c4ccc5c3a72af27a9b17d2024db8cd7956dc4707045f_sk');
+		await addIdentity('distributor','d09d7a34e7399e527d3573d692e3a78a602261ccda5fe2053652a16026c2abf0_sk');
+		await addIdentity('retailer','8690deccd410bbea6c5fb1c1d0de04bc7bc5269abc03de2db7113c0e56edd08f_sk');
+		await addIdentity('consumer','e7a2a60709ac2255bba724ecd9626a8e9634c77b504f99a611077773af4557d6_sk');
+		await addIdentity('transporter','f12f6a352e07169511272969df1a1c28a1ef3648ce519d78b59bbbc2c254d37b_sk');
+	} catch (error) {
+		console.log(error.stack);
+		throw new Error(`Error adding to wallet. ${error}`);
+	}
+}
+
+exports.addIdentity = addIdentity;
+exports.initializeAllIdentititiesAtOnce = initializeAllIdentititiesAtOnce;
 // main().then(() => {
 // 	console.log('Added New Client Identity for Admin User in all Organizations');
 // }).catch((e) => {

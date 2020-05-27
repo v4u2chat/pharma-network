@@ -14,6 +14,24 @@ app.set('title', 'PharmaNet App');
 
 app.get('/', (req, res) => res.send('Hello Blockchain World, Here comes our hyperledger fabric based PharmaNet App'));
 
+app.post('/initializeAllIdentititiesAtOnce', (req, res) => {
+	addToWallet.initializeAllIdentititiesAtOnce()
+		.then(() => {
+			const result = {
+				status: 'success',
+				message: `All organisation user credentials added to wallet`
+			};
+			res.json(result);
+		})
+		.catch((e) => {
+			const result = {
+				status: 'error',
+				message: 'Failed',
+				error: e
+			};
+			res.status(500).send(result);
+		});
+});
 app.post('/addToWallet', (req, res) => {
 	addToWallet.addIdentity(req.body.orgType, req.body.privateKeyFileName)
 			.then(() => {
