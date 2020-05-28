@@ -1,4 +1,4 @@
-# pharma-network
+# PHARMANET
 A project for applying blockchain technology to tackle the challenges of drug-counterfeiting in a pharmaceutical supply chain
 
 ## Network Architecture
