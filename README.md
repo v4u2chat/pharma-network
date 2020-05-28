@@ -81,7 +81,5 @@ Let’s look at the properties of the fabric network required for the supply cha
 
 ## Network Setup
 
-1. Pre-setup
-    1. Generate Crypto Materials
-		```console
-        Rajesh GADIPARTHI >> $ cryptogen generate --config=./crypto-config.yaml
+Refer the following link for detailed instructions 
+ - [Instruction Document for PHARMANET](https://docs.google.com/document/d/1Z9AfCGvm5rW2UMn9BAP5n77XSj1F8h196QOy5CwW6Vg/edit?usp=sharing)
