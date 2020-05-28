@@ -1,6 +1,14 @@
 'use strict';
 const helper = require('./contractHelper');
 
+/**
+ * This is a Node.JS module to invoke "registerCompany" method on chaincode
+ * 
+ * @param orgType -  Name of the organisation. Based on this value, respective ADMIN's identity will be used to invoke the function
+ * @param reqPayload -  JSON Object containing all the required values of respective function to be invoked
+ * 
+ * @returns  response of the contract's method
+ */
 async function registerCompany(orgType,reqPayload) {
 	
 	try {
@@ -18,7 +26,14 @@ async function registerCompany(orgType,reqPayload) {
 		
 	}
 }
-
+/**
+ * This is a Node.JS module to invoke "addDrug" method on chaincode
+ * 
+ * @param orgType -  Name of the organisation. Based on this value, respective ADMIN's identity will be used to invoke the function
+ * @param reqPayload -  JSON Object containing all the required values of respective function to be invoked
+ * 
+ * @returns  response of the contract's method
+ */
 async function addDrug(orgType,reqPayload) {
 	
 	try {
@@ -36,7 +51,14 @@ async function addDrug(orgType,reqPayload) {
 		
 	}
 }
-
+/**
+ * This is a Node.JS module to invoke "viewDrugCurrentState" method on chaincode
+ * 
+ * @param orgType -  Name of the organisation. Based on this value, respective ADMIN's identity will be used to invoke the function
+ * @param reqPayload -  JSON Object containing all the required values of respective function to be invoked
+ * 
+ * @returns  response of the contract's method
+ */
 async function viewDrugCurrentState(orgType,reqPayload) {
 	
 	try {
@@ -54,7 +76,14 @@ async function viewDrugCurrentState(orgType,reqPayload) {
 		
 	}
 }
-
+/**
+ * This is a Node.JS module to invoke "viewHistory" method on chaincode
+ * 
+ * @param orgType -  Name of the organisation. Based on this value, respective ADMIN's identity will be used to invoke the function
+ * @param reqPayload -  JSON Object containing all the required values of respective function to be invoked
+ * 
+ * @returns  response of the contract's method
+ */
 async function viewHistory(orgType,reqPayload) {
 	
 	try {
@@ -71,7 +100,14 @@ async function viewHistory(orgType,reqPayload) {
 		helper.disconnect();
 	}
 }
-
+/**
+ * This is a Node.JS module to invoke "createPO" method on chaincode
+ * 
+ * @param orgType -  Name of the organisation. Based on this value, respective ADMIN's identity will be used to invoke the function
+ * @param reqPayload -  JSON Object containing all the required values of respective function to be invoked
+ * 
+ * @returns  response of the contract's method
+ */
 async function createPO(orgType,reqPayload) {
 
 	try {
@@ -89,6 +125,14 @@ async function createPO(orgType,reqPayload) {
 		helper.disconnect();
 	}
 }
+/**
+ * This is a Node.JS module to invoke "createShipment" method on chaincode
+ * 
+ * @param orgType -  Name of the organisation. Based on this value, respective ADMIN's identity will be used to invoke the function
+ * @param reqPayload -  JSON Object containing all the required values of respective function to be invoked
+ * 
+ * @returns  response of the contract's method
+ */
 async function createShipment(orgType,reqPayload) {
 
 	try {
@@ -104,7 +148,15 @@ async function createShipment(orgType,reqPayload) {
 		// Disconnect from the fabric gateway
 		helper.disconnect();
 	}
-}	
+}
+/**
+ * This is a Node.JS module to invoke "updateShipment" method on chaincode
+ * 
+ * @param orgType -  Name of the organisation. Based on this value, respective ADMIN's identity will be used to invoke the function
+ * @param reqPayload -  JSON Object containing all the required values of respective function to be invoked
+ * 
+ * @returns  response of the contract's method
+ */
 async function updateShipment(orgType,reqPayload) {
 
 	try {
@@ -120,7 +172,15 @@ async function updateShipment(orgType,reqPayload) {
 		// Disconnect from the fabric gateway
 		helper.disconnect();
 	}
-}	
+}
+/**
+ * This is a Node.JS module to invoke "retailDrug" method on chaincode
+ * 
+ * @param orgType -  Name of the organisation. Based on this value, respective ADMIN's identity will be used to invoke the function
+ * @param reqPayload -  JSON Object containing all the required values of respective function to be invoked
+ * 
+ * @returns  response of the contract's method
+ */
 async function retailDrug(orgType,reqPayload) {
 
 	try {

@@ -39,7 +39,7 @@ async function getContractInstance(orgType) {
 	// @param Name of chaincode
 	// @param Name of smart contract
 	console.log('.....Connecting to pharmanet Smart Contract');
-	console.log('org.pharma-network.pharmanet.'+orgType);
+	orgType = orgType=="consumer" ? "manufacturer" : orgType;
 	return channel.getContract('pharmanet', 'org.pharma-network.pharmanet.'+orgType);
 }
 

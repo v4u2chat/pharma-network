@@ -142,7 +142,6 @@ async function createPO(ctx, buyerCRN, sellerCRN, drugName,quantity) {
 		,buyerCRN: buyerCRN
 		,sellerCRN: sellerCRN
 		,quantity: parseInt(quantity)
-		,manufacturer : sellerCompanyInfo.hierarchyKey==1 ? sellerCompanyInfo.companyID : null
 		,additionalInfo : {	
 			buyerCompanyID : buyerCompanyInfo.companyID
 			,sellerCompanyID : sellerCompanyInfo.companyID
@@ -153,8 +152,6 @@ async function createPO(ctx, buyerCRN, sellerCRN, drugName,quantity) {
 	let newPurchaseOrderObjectDataBuffer = toBuffer(newPurchaseOrderObject);
 	await ctx.stub.putState(poID, newPurchaseOrderObjectDataBuffer);
 	
-	ctx.stub.setEvent('createPO_Event', newPurchaseOrderObjectDataBuffer);
-
 	return newPurchaseOrderObject;	// Return value of new  Purchase Order object created to user
 }
 //============================================================================================================================================
@@ -222,14 +219,17 @@ async function createShipment(ctx, buyerCRN, drugName, listOfAssets, transporter
 	//	Validate DRUG existence with Manufacturer
 	let drugFoundWithSeller = false;
 	let drugAssetsToBeAttached = [];
-
+	let j=0;
 	for(var i=0;i<drugSearchResults.length; i++) {
 		var drugFoundWithSameName = drugSearchResults[i];
 		
 		// Check the DRUG is available with SELLER 
-		if(drugFoundWithSameName.owner===poDetails.additionalInfo.sellerCompanyID){	//&& drugFoundWithSameName.shipment.length==0
+		if(drugFoundWithSameName.owner===poDetails.additionalInfo.sellerCompanyID){
 			drugFoundWithSeller=true;
-			drugAssetsToBeAttached.push(drugFoundWithSameName.productID);
+			if(listOfAssetsArray[i] == drugFoundWithSameName.serialNo){
+				drugAssetsToBeAttached.push(drugFoundWithSameName.productID);
+				j++;
+			}
 
 			if(drugAssetsToBeAttached.length==poDetails.quantity){
 				break;

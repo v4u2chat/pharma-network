@@ -1,0 +1,262 @@
+{
+	"info": {
+		"_postman_id": "f7b1e528-9e92-4a96-bb1a-226bcc4035b7",
+		"name": "Initiation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Manufacturer - registerCompany",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orgType\": \"manufacturer\",\n    \"companyCRN\": \"MAN001\",\n    \"companyName\": \"Sun Pharma\",\n    \"location\": \"Chennai\",\n    \"organisationRole\": \"Manufacturer\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/registerCompany",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"registerCompany"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Distributor - registerCompany",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orgType\": \"distributor\",\n    \"companyCRN\": \"DIST001\",\n    \"companyName\": \"VG pharma\",\n    \"location\": \"Vizag\",\n    \"organisationRole\": \"Distributor\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/registerCompany",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"registerCompany"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retailer - registerCompany",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orgType\": \"retailer\",\n    \"companyCRN\": \"RET002\",\n    \"companyName\": \"upgrad\",\n    \"location\": \"Mumbai\",\n    \"organisationRole\": \"Retailer\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/registerCompany",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"registerCompany"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transporter - registerCompany FedEx",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orgType\": \"transporter\",\n    \"companyCRN\": \"TRA001\",\n    \"companyName\": \"FedEx\",\n    \"location\": \"Delhi\",\n    \"organisationRole\": \"Transporter\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/registerCompany",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"registerCompany"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transporter - registerCompany Blue Dart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orgType\": \"transporter\",\n    \"companyCRN\": \"TRA002\",\n    \"companyName\": \"Blue Dart\",\n    \"location\": \"Bangalore\",\n    \"organisationRole\": \"Transporter\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/registerCompany",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"registerCompany"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Manufacturer - addDrug 001",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orgType\": \"manufacturer\",\n    \"drugName\": \"Paracetamol\",\n    \"serialNo\": \"001\",\n    \"mfgDate\": \"01/06/2020\",\n    \"expDate\": \"01/06/2025\",\n    \"companyCRN\": \"MAN001\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/addDrug",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"addDrug"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Manufacturer - addDrug 002",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orgType\": \"manufacturer\",\n    \"drugName\": \"Paracetamol\",\n    \"serialNo\": \"002\",\n    \"mfgDate\": \"01/06/2020\",\n    \"expDate\": \"01/06/2025\",\n    \"companyCRN\": \"MAN001\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/addDrug",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"addDrug"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Manufacturer - addDrug 003",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orgType\": \"manufacturer\",\n    \"drugName\": \"Paracetamol\",\n    \"serialNo\": \"003\",\n    \"mfgDate\": \"01/06/2020\",\n    \"expDate\": \"01/06/2025\",\n    \"companyCRN\": \"MAN001\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/addDrug",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"addDrug"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Manufacturer - addDrug 004",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orgType\": \"manufacturer\",\n    \"drugName\": \"Paracetamol\",\n    \"serialNo\": \"004\",\n    \"mfgDate\": \"01/06/2020\",\n    \"expDate\": \"01/06/2025\",\n    \"companyCRN\": \"MAN001\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/addDrug",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"addDrug"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

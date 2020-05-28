@@ -54,12 +54,14 @@ CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypt
 peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.distributor:createPO","MAN001","DIST001","TEST","1"]}'
 peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.distributor:createPO","DIST0011","MAN001","TEST","1"]}'
 peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.distributor:createPO","DIST001","MAN001","TEST","1"]}'
-peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.distributor:createPO","DIST001","MAN001","Paracetamol","1"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.distributor:createPO","DIST001","MAN001","Brufin","1"]}'
 peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.distributor:createPO","DIST001","MAN001","Paracetamol","1"]}'
 
 peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.distributor:createShipment","RET002","Paracetamol","[\"org.pharma-network.pharmanet.drugParacetamol001\"]","TRA002"]}'
 
 
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.distributor:createShipment","XYZ001","Paracetamol","[\"org.pharma-network.pharmanet.drugParacetamol001\"]","TRA002"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.distributor:createShipment","RET002","Paracetamol","[\"org.pharma-network.pharmanet.drugParacetamol001\"]","XYZ001"]}'
 
 docker exec -it cli /bin/bash
 
@@ -68,7 +70,7 @@ CORE_PEER_ADDRESS=peer0.retailer.pharma-network.com:11051
 CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/retailer.pharma-network.com/users/Admin@retailer.pharma-network.com/msp
 
 peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.retailer:createPO","CRN-001","CRN-003","TEST","1"]}'
-peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.retailer:createPO","RET002","DIST001","Paracetamol","1"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.retailer:createPO","RET002","DIST001","Paracetamol","2"]}'
 
 peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.pharmanet.retailer:retailDrug","Paracetamol","001","RET002","9090-1212-3434"]}'
 

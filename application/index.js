@@ -15,6 +15,7 @@ app.set('title', 'PharmaNet App');
 
 app.get('/', (req, res) => res.send('Hello Blockchain World, Here comes our hyperledger fabric based PharmaNet App'));
 
+// ________________________________________________________API route to invoke "initializeAllIdentititiesAtOnce"
 app.get('/initializeAllIdentititiesAtOnce', (req, res) => {
 	addToWallet.initializeAllIdentititiesAtOnce()
 		.then(() => {
@@ -33,7 +34,7 @@ app.get('/initializeAllIdentititiesAtOnce', (req, res) => {
 			res.status(500).send(result);
 		});
 });
-
+// ________________________________________________________ API route to invoke "addToWallet"
 app.post('/addToWallet', (req, res) => {
 	addToWallet.addIdentity(req.body.orgType, req.body.privateKeyFileName)
 			.then(() => {
@@ -53,7 +54,7 @@ app.post('/addToWallet', (req, res) => {
 				res.status(500).send(result);
 			});
 });
-
+// ________________________________________________________ API route to invoke "addToWallet"
 app.post('/registerCompany', (req, res) => {
 	contractFunctions.registerCompany(req.body.orgType,req.body)
 	.then((response) => {
@@ -74,7 +75,7 @@ app.post('/registerCompany', (req, res) => {
 	});
 });
 
-
+// ________________________________________________________ API route to invoke "addDrug"
 app.post('/addDrug', (req, res) => {
 	contractFunctions.addDrug(req.body.orgType,req.body)
 	.then((response) => {
@@ -95,10 +96,7 @@ app.post('/addDrug', (req, res) => {
 	});
 });
 
-
-
-
-
+// ________________________________________________________ API route to invoke "createPO"
 app.post('/createPO', (req, res) => {
 	contractFunctions.createPO(req.body.orgType,req.body)
 	.then((response) => {
@@ -118,7 +116,7 @@ app.post('/createPO', (req, res) => {
 		res.status(500).send(result);
 	});
 });
-
+// ________________________________________________________ API route to invoke "createShipment"
 app.post('/createShipment', (req, res) => {
 	contractFunctions.createShipment(req.body.orgType,req.body)
 	.then((response) => {
@@ -138,8 +136,7 @@ app.post('/createShipment', (req, res) => {
 		res.status(500).send(result);
 	});
 });
-
-
+// ________________________________________________________ API route to invoke "updateShipment"
 app.post('/updateShipment', (req, res) => {
 	contractFunctions.updateShipment(req.body.orgType,req.body)
 	.then((response) => {
@@ -159,7 +156,7 @@ app.post('/updateShipment', (req, res) => {
 		res.status(500).send(result);
 	});
 });
-
+// ________________________________________________________ API route to invoke "retailDrug"
 app.post('/retailDrug', (req, res) => {
 	contractFunctions.retailDrug(req.body.orgType,req.body)
 	.then((response) => {
@@ -179,7 +176,7 @@ app.post('/retailDrug', (req, res) => {
 		res.status(500).send(result);
 	});
 });
-
+// ________________________________________________________ API route to invoke "viewHistory"
 app.post('/viewHistory', (req, res) => {
 	contractFunctions.viewHistory(req.body.orgType,req.body)
 	.then((response) => {
@@ -199,7 +196,7 @@ app.post('/viewHistory', (req, res) => {
 		res.status(500).send(result);
 	});
 });
-
+// ________________________________________________________ API route to invoke "viewDrugCurrentState"
 app.post('/viewDrugCurrentState', (req, res) => {
 	contractFunctions.viewDrugCurrentState(req.body.orgType,req.body)
 	.then((response) => {
@@ -219,5 +216,5 @@ app.post('/viewDrugCurrentState', (req, res) => {
 		res.status(500).send(result);
 	});
 });
-
+// Starting the SERVER on Port No 3000
 app.listen(port, () => console.log(`Distributed PharmeNet App listening on port ${port}!`));

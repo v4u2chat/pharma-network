@@ -1,0 +1,206 @@
+{
+	"info": {
+		"_postman_id": "4c4cb5aa-11e5-478f-a862-de1647ee0f5a",
+		"name": "Supply Chain",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Part a: Distributor - createPO (VG Pharma - 3 Strips)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orgType\": \"distributor\",\n    \"buyerCRN\": \"DIST001\",\n    \"sellerCRN\": \"MAN001\",\n    \"drugName\": \"Paracetamol\",\n    \"quantity\": \"1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/createPO",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"createPO"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Part a: Manufacturer - createShipment (Sun Pharma - 3 Strips)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orgType\": \"manufacturer\",\n    \"buyerCRN\": \"DIST001\",\n    \"drugName\": \"Paracetamol\",\n    \"listOfAssets\": \"[\\\"org.pharma-network.pharmanet.drugParacetamol001\\\"]\",\n    \"transporterCRN\": \"TRA001\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/createShipment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"createShipment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Part a: Transporter - updateShipment (FedEx to VG Pharma)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orgType\": \"transporter\",\n    \"buyerCRN\": \"DIST001\",\n    \"drugName\": \"Paracetamol\",\n    \"transporterCRN\": \"TRA001\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/updateShipment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"updateShipment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Part b: Retailer - createPO (upgrad - 2 Stripts)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orgType\": \"retailer\",\n    \"buyerCRN\": \"RET002\",\n    \"sellerCRN\": \"DIST001\",\n    \"drugName\": \"Paracetamol\",\n    \"quantity\": \"2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/createPO",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"createPO"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Part b: Distributor - createShipment (VG Pharma to upgrad - Blue Dart)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orgType\": \"distributor\",\n    \"buyerCRN\": \"RET002\",\n    \"drugName\": \"Paracetamol\",\n    \"listOfAssets\": \"[\\\"org.pharma-network.pharmanet.drugParacetamol002\\\",\\\"org.pharma-network.pharmanet.drugParacetamol003\\\"]\",\n    \"transporterCRN\": \"TRA002\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/createShipment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"createShipment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Part b: Transporter - updateShipment (BlueDart to upgrad)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orgType\": \"transporter\",\n    \"buyerCRN\": \"RET002\",\n    \"drugName\": \"Paracetamol\",\n    \"transporterCRN\": \"TRA002\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/updateShipment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"updateShipment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retailer - retailDrug (AAD001)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orgType\": \"retailer\",\n    \"drugName\": \"Paracetamol\",\n    \"serialNo\": \"001\",\n    \"retailerCRN\": \"RET002\",\n    \"customerAadhar\": \"9090-1212-3434\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/retailDrug",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"retailDrug"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -81,6 +81,7 @@ class ManufacturerContract extends Contract {
 		let newDrugObject = {
 			productID: productID
 			,name: drugName
+			,serialNo:serialNo
 			,manufacturer: companySearchResults[0].companyID
 			,manufacturingDate: mfgDate
 			,expiryDate: expDate

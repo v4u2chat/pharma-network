@@ -3,6 +3,7 @@
 /**
  * This is a Node.JS module to load a user's Identity to his wallet.
  * This Identity will be used to sign transactions initiated by this user.
+ * 	User name would be <<ORG_NAME>>_ADMIN
  */
 
 const fs = require('fs'); // FileSystem Library
@@ -19,8 +20,8 @@ async function addIdentity(orgType,privateKeyFileName){
 		// Fetch the credentials from our previously generated Crypto Materials required to create this user's identity
 		const credentialPath = path.join(crypto_materials, '/peerOrganizations/'+orgType+'.pharma-network.com/users/Admin@'+orgType+'.pharma-network.com');
 		const certificate = fs.readFileSync(path.join(credentialPath, '/msp/signcerts/Admin@'+orgType+'.pharma-network.com-cert.pem')).toString();
+
 		// IMPORTANT: Change the private key name to the key generated on your computer
-		//4467cbc87d9e0b1d56d1c4ccc5c3a72af27a9b17d2024db8cd7956dc4707045f_sk
 		const privatekey = fs.readFileSync(path.join(credentialPath, '/msp/keystore/'+privateKeyFileName)).toString();
 		
 		// Load credentials into wallet
@@ -37,7 +38,10 @@ async function addIdentity(orgType,privateKeyFileName){
 	}
 }
 
-
+/**
+ * This is a Node.JS module to load all user's Identity to their respective wallet.
+ * This Identity will be used to sign transactions initiated by this user.
+ */
 async function initializeAllIdentititiesAtOnce() {
 	try {
 		await addIdentity('manufacturer','a3486388c31a90e9794f96157db2aa5606eaa896bfe944535323317c22d30e02_sk');
@@ -53,10 +57,3 @@ async function initializeAllIdentititiesAtOnce() {
 
 exports.addIdentity = addIdentity;
 exports.initializeAllIdentititiesAtOnce = initializeAllIdentititiesAtOnce;
-// main().then(() => {
-// 	console.log('Added New Client Identity for Admin User in all Organizations');
-// }).catch((e) => {
-// 	console.log(e);
-// 	console.log(e.stack);
-// 	//process.exit(-1);
-// });
